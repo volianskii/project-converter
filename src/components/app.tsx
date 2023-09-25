@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import '../style/style.scss';
 import Input from './input/input';
+import '../style/style.scss';
 
 const BASE_URL = 'https://open.er-api.com/v6/latest/';
 
@@ -11,6 +11,8 @@ function App(): JSX.Element {
   const [amount, setAmount] = useState<number>(1);
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true);
   const [exchangeRate, setExchangeRate] = useState(0);
+  let fromAmount: number;
+  let toAmount: number;
 
   const inputFromEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
@@ -20,14 +22,9 @@ function App(): JSX.Element {
     setAmount(Number(event.target.value));
     setAmountInFromCurrency(false)
   }
-  console.log(currencyList);
-  console.log(exchangeRate);
-  let fromAmount;
-  let toAmount;
 
   if (amountInFromCurrency) {
     fromAmount = amount;
-    console.log(`fromAmount: ${fromAmount}`);
     toAmount = amount * exchangeRate
   } else {
     toAmount = amount;
@@ -39,7 +36,6 @@ function App(): JSX.Element {
       .then(res => res.json())
       .then(data => {
         setCurrencyList([data.base_code, ...Object.keys(data.rates)])
-        console.log(data)
         const euroCurrency = Object.keys(data.rates)[43]
         setToCurrency(euroCurrency)
         setFromCurrency(data.base_code)
@@ -53,11 +49,10 @@ function App(): JSX.Element {
         .then(res => res.json())
         .then(data => {
           setExchangeRate(data.rates[ToCurrency]);
-          console.log(data);
         })
     }
 
-  })
+  }, [ToCurrency, FromCurrency])
 
   return (
     <div>
