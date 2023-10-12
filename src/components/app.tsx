@@ -55,10 +55,10 @@ function App(): JSX.Element {
   }, [ToCurrency, FromCurrency])
 
   return (
-    <div>
+    <div className='main-container'>
       <h1>Convert</h1>
       <Input currencyList={currencyList} selectedCurrency={FromCurrency} onChangeCurrency={(event) => setFromCurrency(event.target.value)} amount={fromAmount} onChangeValue={inputFromEventHandler} />
-      <div><p>=</p></div>
+      <p>=</p>
       <Input currencyList={currencyList} selectedCurrency={ToCurrency} onChangeCurrency={(event) => setToCurrency(event.target.value)} amount={toAmount} onChangeValue={inputToEventHandler} />
     </div>
   )
